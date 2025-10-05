@@ -1,0 +1,7 @@
+def score_resume(resume_data):
+    score = 0
+    if resume_data['email']: score += 20
+    if resume_data['phone']: score += 20
+    if len(resume_data['skills']) > 5: score += 30
+    if resume_data['experience']: score += 30
+    return score
