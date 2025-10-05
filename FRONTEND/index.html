@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ResumeRAG - AI-Powered Recruitment Platform</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Animated Background Shapes -->
+    <div class="floating-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
+
+    <!-- Floating Particles -->
+    <div class="particles-container">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <!-- Auth Modal -->
+    <div class="modal fade" id="authModal" tabindex="-1" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-body p-0">
+                    <div class="auth-container">
+                        <div class="auth-header text-center mb-4">
+                            <div class="logo-circle mx-auto mb-3">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <h3 class="auth-title">Welcome to ResumeRAG</h3>
+                            <p class="text-muted">AI-Powered Smart Recruitment</p>
+                        </div>
+
+                        <form id="loginForm" class="auth-form">
+                            <div class="mb-3">
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                    <input type="email" class="form-control" id="loginEmail" placeholder="Email" required>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                    <input type="password" class="form-control" id="loginPassword" placeholder="Password" required>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100 mb-3">
+                                <i class="fas fa-sign-in-alt me-2"></i>Sign In
+                            </button>
+                            <p class="text-center mb-0">
+                                Don't have an account? 
+                                <a href="#" id="showSignup" class="text-primary">Sign Up</a>
+                            </p>
+                        </form>
+
+                        <form id="signupForm" class="auth-form d-none">
+                            <div class="mb-3">
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                    <input type="text" class="form-control" id="signupName" placeholder="Full Name" required>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                    <input type="email" class="form-control" id="signupEmail" placeholder="Email" required>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                    <input type="password" class="form-control" id="signupPassword" placeholder="Password" required>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-success w-100 mb-3">
+                                <i class="fas fa-user-plus me-2"></i>Create Account
+                            </button>
+                            <p class="text-center mb-0">
+                                Already have an account? 
+                                <a href="#" id="showLogin" class="text-primary">Sign In</a>
+                            </p>
+                        </form>
+
+                        <div id="authError" class="alert alert-danger mt-3 d-none"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="mainApp" class="d-none">
+        <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+            <div class="container-fluid px-4">
+                <a class="navbar-brand d-flex align-items-center" href="#">
+                    <div class="logo-badge me-2">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <span class="fw-bold">ResumeRAG</span>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto align-items-center">
+                        <li class="nav-item">
+                            <span class="navbar-text text-white me-3">
+                                <i class="fas fa-user-circle me-2"></i>
+                                <span id="userName">User</span>
+                            </span>
+                        </li>
+                        <li class="nav-item">
+                            <button class="btn btn-outline-light btn-sm" id="logoutBtn">
+                                <i class="fas fa-sign-out-alt me-1"></i>Logout
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <section class="hero-section">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6">
+                        <h1 class="hero-title mb-4">Smart Recruitment with AI</h1>
+                        <p class="hero-subtitle mb-4">Match resumes with jobs using advanced RAG technology.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="container my-5">
+            <div class="modern-tabs mb-5">
+                <button class="tab-btn active" data-tab="upload">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <span>Upload Resume</span>
+                </button>
+                <button class="tab-btn" data-tab="search">
+                    <i class="fas fa-search"></i>
+                    <span>Search Resumes</span>
+                </button>
+                <button class="tab-btn" data-tab="jobs">
+                    <i class="fas fa-briefcase"></i>
+                    <span>Post Job</span>
+                </button>
+                <button class="tab-btn" data-tab="match">
+                    <i class="fas fa-magic"></i>
+                    <span>Match Jobs</span>
+                </button>
+                <button class="tab-btn" data-tab="colleges">
+                    <i class="fas fa-university"></i>
+                    <span>Colleges</span>
+                </button>
+            </div>
+
+            <div class="tab-content-modern">
+                <!-- Upload Resume Tab -->
+                <div class="tab-pane-modern active" id="upload">
+                    <div class="modern-card">
+                        <h3 class="mb-3">Upload Your Resume</h3>
+                        <form id="uploadForm">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">College/University</label>
+                                    <input type="text" class="form-control modern-input" id="resumeCollege" placeholder="e.g., Lovely Professional University">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Degree</label>
+                                    <input type="text" class="form-control modern-input" id="resumeDegree" placeholder="e.g., B.Tech CSE">
+                                </div>
+                            </div>
+                            <div class="upload-zone mb-4" id="dropZone">
+                                <input type="file" id="resumeFile" accept=".pdf,.docx,.txt" hidden>
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>Drag & drop or click to upload</p>
+                                <span class="text-muted small">PDF, DOCX, TXT (Max 16MB)</span>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-lg w-100">
+                                <span class="spinner-border spinner-border-sm me-2 d-none" id="uploadSpinner"></span>
+                                <i class="fas fa-upload me-2"></i>Upload Resume
+                            </button>
+                        </form>
+                        <div id="uploadResult" class="mt-4"></div>
+                    </div>
+                </div>
+
+                <!-- Search Tab -->
+                <div class="tab-pane-modern" id="search">
+                    <div class="modern-card">
+                        <h3 class="mb-3">Search Resumes</h3>
+                        <form id="searchForm">
+                            <textarea class="form-control modern-input mb-3" id="jobDescription" rows="6" placeholder="Enter job requirements..." required></textarea>
+                            <button type="submit" class="btn btn-success btn-lg w-100">
+                                <span class="spinner-border spinner-border-sm me-2 d-none" id="searchSpinner"></span>
+                                Search
+                            </button>
+                        </form>
+                        <div id="searchResults" class="mt-4"></div>
+                    </div>
+                </div>
+
+                <!-- Jobs Tab -->
+                <div class="tab-pane-modern" id="jobs">
+                    <div class="modern-card">
+                        <h3 class="mb-3">Post a Job</h3>
+                        <form id="jobForm">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <input type="text" class="form-control modern-input" id="jobTitle" placeholder="Job Title" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <input type="text" class="form-control modern-input" id="jobCompany" placeholder="Company" required>
+                                </div>
+                            </div>
+                            <input type="text" class="form-control modern-input mb-3" id="jobLocation" placeholder="Location" required>
+                            <textarea class="form-control modern-input mb-3" id="jobDesc" rows="4" placeholder="Job Description" required></textarea>
+                            <textarea class="form-control modern-input mb-3" id="jobRequirements" rows="4" placeholder="Requirements" required></textarea>
+                            <button type="submit" class="btn btn-info btn-lg w-100 text-white">
+                                <span class="spinner-border spinner-border-sm me-2 d-none" id="jobSpinner"></span>
+                                Post Job
+                            </button>
+                        </form>
+                        <div id="jobResult" class="mt-4"></div>
+                    </div>
+                </div>
+
+                <!-- Match Tab -->
+                <div class="tab-pane-modern" id="match">
+                    <div class="modern-card">
+                        <h3 class="mb-3">Find Matching Jobs</h3>
+                        <form id="matchForm">
+                            <textarea class="form-control modern-input mb-4" id="resumeText" rows="8" placeholder="Paste your resume..." required></textarea>
+                            <button type="submit" class="btn btn-warning btn-lg w-100">
+                                <span class="spinner-border spinner-border-sm me-2 d-none" id="matchSpinner"></span>
+                                Find Jobs
+                            </button>
+                        </form>
+                        <div id="matchResults" class="mt-4"></div>
+                    </div>
+                </div>
+
+                <!-- Colleges Tab -->
+                <div class="tab-pane-modern" id="colleges">
+                    <div class="modern-card">
+                        <h3 class="mb-3">College Student Database</h3>
+                        <button class="btn btn-primary mb-4" data-bs-toggle="collapse" data-bs-target="#addStudentForm">
+                            <i class="fas fa-plus me-2"></i>Add New Student
+                        </button>
+
+                        <div class="collapse mb-4" id="addStudentForm">
+                            <div class="card border-primary">
+                                <div class="card-body">
+                                    <form id="collegeStudentForm">
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <input type="text" class="form-control modern-input" id="studentName" placeholder="Student Name" required>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <input type="email" class="form-control modern-input" id="studentEmail" placeholder="Email" required>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <input type="text" class="form-control modern-input" id="collegeName" placeholder="College Name" required>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <input type="text" class="form-control modern-input" id="studentDegree" placeholder="Degree" required>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <select class="form-control modern-input" id="studentYear" required>
+                                                    <option value="">Select Year</option>
+                                                    <option>1st Year</option>
+                                                    <option>2nd Year</option>
+                                                    <option>3rd Year</option>
+                                                    <option>4th Year</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <input type="tel" class="form-control modern-input" id="studentPhone" placeholder="Phone" required>
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Add Student</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="studentsList"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chatbot -->
+    <div class="chatbot-widget">
+        <div class="chatbot-toggle" id="chatbotToggle">
+            <i class="fas fa-comments"></i>
+        </div>
+        <div class="chatbot-window d-none" id="chatbotWindow">
+            <div class="chatbot-header">
+                <h6 class="mb-0">Help & Support</h6>
+                <button class="btn-close btn-close-white btn-sm" id="chatbotClose"></button>
+            </div>
+            <div class="chatbot-body" id="chatbotBody">
+                <div class="chat-message">
+                    <p><strong>Bot:</strong> How can I help?</p>
+                </div>
+                <div class="quick-options">
+                    <button class="option-btn" data-option="upload">How to upload resume?</button>
+                    <button class="option-btn" data-option="search">How does matching work?</button>
+                    <button class="option-btn" data-option="score">Understanding scores</button>
+                    <button class="option-btn" data-option="contact">Contact Admin</button>
+                </div>
+            </div>
+            <div id="contactForm" style="display:none; padding:1rem;">
+                <form id="adminContactForm">
+                    <input type="text" class="form-control form-control-sm mb-2" id="contactName" placeholder="Name" required>
+                    <input type="email" class="form-control form-control-sm mb-2" id="contactEmail" placeholder="Email" required>
+                    <input type="tel" class="form-control form-control-sm mb-2" id="contactPhone" placeholder="Phone" required>
+                    <textarea class="form-control form-control-sm mb-2" id="contactMessage" rows="2" placeholder="Message" required></textarea>
+                    <button type="submit" class="btn btn-primary btn-sm w-100">Send</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer mt-5">
+        <div class="container text-center">
+            <p class="text-white mb-2">Developed By: <strong>Mukul Sharma</strong></p>
+            <p class="text-muted small">Student, Lovely Professional University</p>
+            <p class="text-muted small">mukulsharmaworks@gmail.com</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
